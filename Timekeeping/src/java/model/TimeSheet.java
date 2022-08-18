@@ -4,6 +4,7 @@
  */
 package model;
 
+import helper.DateTimeHelper;
 import java.util.Date;
 
 /**
@@ -11,10 +12,16 @@ import java.util.Date;
  * @author Dat Lai
  */
 public class TimeSheet {
+
     private int tid;
     private Employee emp;
     private Date checkin;
     private Date checkout;
+    private Date cidate;
+
+    public Date getCidate() {
+        return DateTimeHelper.removeTime(checkin);
+    }
 
     public int getTid() {
         return tid;
