@@ -5,12 +5,17 @@
 
 package controller;
 
+import dal.EmployeeDBContext;
+import helper.DateTimeHelper;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.Date;
+import java.util.List;
+import model.Employee;
+import model.ViewDate;
 
 /**
  *
@@ -18,41 +23,27 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 public class TimeSheet extends HttpServlet {
    
-
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet TimeSheet</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet TimeSheet at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    } 
-
-   
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+     Date today = new Date();
+        today = DateTimeHelper.removeTime(today);
+        int dayOfMonth = DateTimeHelper.getDayOfMonth(today);
+        Date begin = DateTimeHelper.addDays(today, (dayOfMonth-1)*-1);
+        Date end = DateTimeHelper.addDays(DateTimeHelper.addMonths(begin, 1),-1);
+        EmployeeDBContext db = new EmployeeDBContext();
+        List<Employee> emps = db.getAllEmployee(begin, end);
+        List<ViewDate> dates = DateTimeHelper.getDates(begin, end);
+        request.setAttribute("emps", emps);
+        request.setAttribute("dates", dates);
+        request.getRequestDispatcher("view/timesheet.jsp").forward(request, response);
     } 
 
   
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        
     }
-
   
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }
-
 }
