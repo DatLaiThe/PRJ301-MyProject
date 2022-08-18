@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .heading {
+            font-size: 60px;
+            text-align: center;
+            color: rgb(91, 182, 212);
+        }
+
+        .dateInput {
+            margin-bottom: 10px;
+        }
+
+        .right {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+        }
+
+        .congItem {
+            font-size: 11px;
+            padding: 0.75rem 0px !important;
+        }
+
+        .week {
+            transform: rotate(-90deg);
+            padding: 10px 0px !important;
+
+        }
+
+        .absent {
+            background-color: rgb(200, 99, 99, .5);
+        }
+
+        .request {
+            background-color: rgba(60, 60, 165, 0.5);
+        }
+
+        .late {
+            background-color: rgba(255, 166, 0, 0.5);
+        }
+
+        .present {
+            background-color: rgba(0, 128, 0, 0.5);
+        }
+
+        .table-dark th {
+            border: 1px solid #dee2e6 !important;
+        }
+
+        element {}
+
+        .table-bordered td,
+        .table-bordered th {
+            border: 1px solid #909397!important;
+        }
+    </style>
+
+    <!-- Font google -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Open+Sans:wght@300;400;700&family=Work+Sans:wght@300;400;700&display=swap"
+        rel="stylesheet">
+    <!-- BS4 -->
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+</head>
+
+<body>
+    <h1 class="text-center text-primary heading">Salary Calculator</h1>
+    <div class="container mb-5">
+        <div class="function">
+            <div class="row">
+                <div class="col-6">
+                    <div class="left">
+                        <input type="date" class="dateInput">
+                        <form action="search">
+                            <input type="text" placeholder="Search by name" class="form-control d-inline w-50">
+                            <input type="submit" value="Search" class="btn btn-outline-secondary">
+                        </form>
+                    </div>
+                </div>
+                <div class="col-6 position-relative">
+                    <div class="right">
+                        <form action="cal">
+                            <input type="submit" value="Time Keeping" class="btn btn-secondary">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <table class="w-100 table table-bordered text-center ">
+            <tr class="table-active">
+                <th rowspan="2" class="align-middle">Name</th>
+                <th rowspan="2" class="align-middle">Position</th>
+                <th colspan="3">Effort</th>
+                <th colspan="3">Day-off</th>
+                <th rowspan="2" class="align-middle">Work days</th>
+                <th rowspan="2" class="align-middle">Total Effort</th>
+                <th rowspan="2" class="align-middle">Salary</th>
+            </tr>
+            <tr class="table-dark">
+                <th>Normal</th>
+                <th>Weekend</th>
+                <th>Holiday</th>
+                <th>Absent</th>
+                <th>With Request</th>
+                <th>Holiday</th>
+            </tr>
+            <tr>
+                <td>Lai The Dat</td>
+                <td>Manager</td>
+                <td>20</td>
+                <td>2</td>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>0</td>
+                <td>23</td>
+                <td>29</td>
+                <td>1.115$</td>
+            </tr>
+            <tr>
+                <td>Ngo Van Long</td>
+                <td>Engineer</td>
+                <td>19</td>
+                <td>0</td>
+                <td>0</td>
+                <td>5</td>
+                <td>2</td>
+                <td>1</td>
+                <td>19</td>
+                <td>22</td>
+                <td>507.7$</td>
+            </tr>
+            <tr>
+                <td>Nguyen Lan Anh</td>
+                <td>Accountant</td>
+                <td>19</td>
+                <td>0</td>
+                <td>0</td>
+                <td>5</td>
+                <td>2</td>
+                <td>1</td>
+                <td>19</td>
+                <td>22</td>
+                <td>507.7$</td>
+            </tr>
+            <tr>
+                <td>Nguyen Van Phuong</td>
+                <td>Employee</td>
+                <td>19</td>
+                <td>0</td>
+                <td>0</td>
+                <td>5</td>
+                <td>2</td>
+                <td>1</td>
+                <td>19</td>
+                <td>22</td>
+                <td>507.7$</td>
+            </tr>
+            <tr>
+                <td>Nguyen Huu Dai</td>
+                <td>Employee</td>
+                <td>19</td>
+                <td>0</td>
+                <td>0</td>
+                <td>5</td>
+                <td>2</td>
+                <td>1</td>
+                <td>19</td>
+                <td>22</td>
+                <td>507.7$</td>
+            </tr>
+            <tr class="table-primary">
+                <th colspan="2">Total</th>
+                <th>96</th>
+                <th>2</th>
+                <th>0</th>
+                <th>1</th>
+                <th>22</th>
+                <th>4</th>
+                <th>99</th>
+                <th>117</th>
+                <th>3145.8$</th>
+            </tr>
+        </table>
+    </div>
+
+
+
+    <script src="./js/jquery.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+</body>
+
+</html>
