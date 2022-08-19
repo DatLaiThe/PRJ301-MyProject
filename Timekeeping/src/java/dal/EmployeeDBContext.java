@@ -28,7 +28,7 @@ public class EmployeeDBContext extends DBContext {
                     + "	where t.checkin >= ? and t.checkin < ? ) t on e.eid = t.eid";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setTimestamp(1, DateTimeHelper.getTimeStamp(from));
-            stm.setTimestamp(2, DateTimeHelper.getTimeStamp(to));
+            stm.setTimestamp(2, DateTimeHelper.getTimeStamp(DateTimeHelper.addDays(to, 1)));
             ResultSet rs = stm.executeQuery();
             Employee currentEmp = new Employee();
             currentEmp.setEid(-1);

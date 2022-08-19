@@ -4,6 +4,7 @@
  */
 package model;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -11,6 +12,7 @@ import java.util.List;
  * @author Dat Lai
  */
 public class Employee {
+
     private int eid;
     private String ename;
     private int pid;
@@ -65,6 +67,13 @@ public class Employee {
     public void setRequests(List<Request> requests) {
         this.requests = requests;
     }
-    
-    
+
+    public TimeSheet getTimeSheet(Date d) {
+        for (TimeSheet t : this.timesheets) {
+            if(t.getCidate().equals(d)) {
+                return t;
+            }
+        }
+        return null;
+    }
 }

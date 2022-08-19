@@ -34,7 +34,7 @@ public class TimeSheet extends HttpServlet {
 
         EmployeeDBContext db = new EmployeeDBContext();
         List<Employee> emps = db.getAllEmployee(begin, end);
-        List<ViewDate> dates = DateTimeHelper.getDates(begin, end);
+        List<Date> dates = DateTimeHelper.getDates(begin, end);
         request.setAttribute("emps", emps);
         request.setAttribute("dates", dates);
         request.getRequestDispatcher("view/timesheet.jsp").forward(request, response);

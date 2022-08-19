@@ -77,18 +77,16 @@ public class DateTimeHelper {
         return new Timestamp(data.getTime());
     }
     
-    public static ArrayList<ViewDate> getDates(Date from, Date to)
+    public static ArrayList<Date> getDates(Date from, Date to)
     {
-        ArrayList<ViewDate> dates = new ArrayList<>();
+        ArrayList<Date> dates = new ArrayList<>();
         int day =0;
         while(true)
         {
             Date d = addDays(from, day);
-            ViewDate item = new ViewDate();
-            item.setValue(d);
             day++;
-            dates.add(item);
-            if(item.getValue().getTime() - to.getTime() == 0)
+            dates.add(d);
+            if(d.getTime() - to.getTime() == 0)
                 break;
         }
         return dates;
