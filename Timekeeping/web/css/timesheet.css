@@ -24,27 +24,6 @@
     padding: 10px 0px !important;
 
 }
-
-.absent {
-    background-color: rgb(200, 99, 99, .5);
-}
-
-.request {
-    background-color: rgba(60, 60, 165, 0.5);
-}
-
-.late {
-    background-color: rgba(255, 166, 0, 0.5);
-}
-
-.present {
-    background-color: rgba(0, 128, 0, 0.5);
-}
-
-.holiday{
-    background-color: rgba(0, 128, 0, 0.5);
-}
-
 .dot {
     height: 15px;
     width: 15px;

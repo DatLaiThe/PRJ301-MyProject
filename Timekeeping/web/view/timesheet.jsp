@@ -19,11 +19,36 @@ Author     : Dat Lai
         <!-- BS4 -->
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/timesheet.css">
-        
+
         <style>
-            .weekend{
-                background-color: #20c997;;
+            .present {
+                background-color: rgba(0, 128, 0, 0.5);
             }
+
+            .absent {
+                background-color: rgb(200, 99, 99, .5);
+            }
+
+            .request {
+                background-color: rgba(60, 60, 165, 0.5);
+            }
+
+            .late {
+                background-color: rgba(255, 166, 0, 0.5);
+            }
+
+            .weekend{
+                background-color: #20c997;
+            }
+
+            .holiday{
+                background-color: rgba(0, 128, 0, 0.5);
+            }
+            .monthHeading{
+                font-size: 30px;
+                color: #495057;
+            }
+
         </style>
     </head>
 
@@ -58,7 +83,7 @@ Author     : Dat Lai
                     <tr>
                         <th rowspan="3" class="align-middle">Name</th>
                         <th rowspan="3" class="align-middle">Position</th>
-                        <th colspan="31">
+                        <th class="monthHeading" colspan="31">
                         <fmt:formatDate pattern = "MMMM YYYY" 
                                         value = "${requestScope. dates.get(0)}" /> <br/>
                     </th>
@@ -81,59 +106,43 @@ Author     : Dat Lai
                         </td>
                     </c:forEach>
                 </tr>
-                <tr>
-                    <td class="align-middle">Lai The Dat</td>
-                    <td class="align-middle">Manager</td>
-                    <td class="congItem present">8h10<br>-<br>17h50</td>
-                    <td class="congItem absent"><br>-<br></td>
-                    <td class="congItem present">8h10<br>-<br>17h50</td>
-                    <td class="congItem present">8h10<br>-<br>17h50</td>
-                    <td class="congItem present">8h10<br>-<br>17h50</td>
-                    <td class="congItem weekend"><br>-<br></td>
-                    <td class="congItem weekend"><br>-<br></td>
-                    <td class="congItem present">8h10<br>-<br>17h50</td>
-                    <td class="congItem late">9h10<br>-<br>17h50</td>
-                    <td class="congItem present">8h10<br>-<br>17h50</td>
-                    <td class="congItem present">8h10<br>-<br>17h50</td>
-                    <td class="congItem present">8h10<br>-<br>17h50</td>
-                    <td class="congItem weekend"><br>-<br></td>
-                    <td class="congItem weekend"><br>-<br></td>
-                    <td class="congItem request"><br>-<br></td>
-                    <td class="congItem request"><br>-<br></td>
-                    <td class="congItem present">8h10<br>-<br>17h50</td>
-                    <td class="congItem present">8h10<br>-<br>17h50</td>
-                    <td class="congItem present">8h10<br>-<br>17h50</td>
-                    <td class="congItem weekend"><br>-<br></td>
-                    <td class="congItem weekend"><br>-<br></td>
-                    <td class="congItem present">8h10<br>-<br>17h50</td>
-                    <td class="congItem present">8h10<br>-<br>17h50</td>
-                    <td class="congItem present">8h10<br>-<br>17h50</td>
-                    <td class="congItem present">8h10<br>-<br>17h50</td>
-                    <td class="congItem present">8h10<br>-<br>17h50</td>
-                    <td class="congItem weekend"><br>-<br></td>
-                    <td class="congItem weekend"><br>-<br></td>
-                    <td class="congItem late">8h30<br>-<br>17h50</td>
-                    <td class="congItem present">8h10<br>-<br>17h50</td>
-                    <td class="congItem present">8h10<br>-<br>17h50</td>
-                </tr>
                 <c:forEach items="${requestScope.emps}" var="e">
                     <tr>
                         <td class="align-middle">${e.ename}</td>
                         <td class="align-middle">${e.pos.pname}</td>
                         <c:forEach items="${requestScope.dates}" var="d"> 
+                            <!--Render in TimeSheet-->
+                            <!--Render out TimeSheet-->
 
-                            <td class="congItem <c:if test="${dh.getDayOfWeek(d) eq 1 or dh.getDayOfWeek(d) eq 7}">weekend</c:if>">  
-                                <c:forEach items="${e.timesheets}" var="t">
-                                    <c:if test="${d eq t.cidate}">
-                                        <fmt:formatDate pattern = "HH:mm" 
-                                                        value = "${t.checkin}" />
-                                        <br>-<br>
-                                        <fmt:formatDate pattern = "HH:mm" 
-                                                        value = "${t.checkout}" />
 
-                                    </c:if>
-                                </c:forEach> 
-                            </td>
+                            <c:choose>
+
+                                <c:when test = "${dh.isInTimeSheet(e.timesheets,d)}">
+                                    <td class="congItem present <c:if test="${dh.getDayOfWeek(d) eq 1 or dh.getDayOfWeek(d) eq 7}">weekend</c:if>">  
+                                        <c:forEach items="${e.timesheets}" var="t">
+
+                                            <c:if test="${d eq t.cidate}">
+                                                <div class="<c:if test="${dh.isLate(t)}">late</c:if>">
+                                                    <fmt:formatDate pattern = "HH:mm" 
+                                                                value = "${t.checkin}" />
+                                                    <br>-<br>
+                                                    <fmt:formatDate pattern = "HH:mm" 
+                                                                    value = "${t.checkout}" />
+                                                </div> 
+                                            </c:if>  
+
+
+                                        </c:forEach> 
+                                    </td>
+                                </c:when>
+
+                                <c:otherwise>
+                                    <td class="congItem absent <c:if test="${dh.isInRequest(e.requests,d)}">request</c:if> <c:if test="${dh.getDayOfWeek(d) eq 1 or dh.getDayOfWeek(d) eq 7}">weekend</c:if>">  
+                                            <br>-<br>
+                                        </td>
+                                </c:otherwise>
+                            </c:choose>
+
 
                         </c:forEach>
 
