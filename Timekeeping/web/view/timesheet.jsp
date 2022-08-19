@@ -19,7 +19,12 @@ Author     : Dat Lai
         <!-- BS4 -->
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/timesheet.css">
-
+        
+        <style>
+            .weekend{
+                background-color: #20c997;;
+            }
+        </style>
     </head>
 
     <body>
@@ -62,7 +67,7 @@ Author     : Dat Lai
                 <tr class="thead-light">
                     <c:forEach items="${requestScope.dates}" var="d">
                         <th>
-                            <fmt:formatDate pattern = "d" 
+                            <fmt:formatDate pattern = "dd" 
                                             value = "${d}" /> <br/>
                         </th>
                     </c:forEach>
@@ -70,7 +75,7 @@ Author     : Dat Lai
                 <!--render day-->
                 <tr>
                     <c:forEach items="${requestScope.dates}" var="d">
-                        <td class="week <c:if test="${dh.getDayOfWeek(d) eq 1 or dh.getDayOfWeek(d) eq 7}">request</c:if>">
+                        <td class="week <c:if test="${dh.getDayOfWeek(d) eq 1 or dh.getDayOfWeek(d) eq 7}">weekend</c:if>">
                             <fmt:formatDate pattern = "EEE" 
                                             value = "${d}" />
                         </td>
@@ -117,7 +122,7 @@ Author     : Dat Lai
                         <td class="align-middle">${e.pos.pname}</td>
                         <c:forEach items="${requestScope.dates}" var="d"> 
 
-                            <td class="congItem <c:if test="${dh.getDayOfWeek(d) eq 1 or dh.getDayOfWeek(d) eq 7}">request</c:if>">  
+                            <td class="congItem <c:if test="${dh.getDayOfWeek(d) eq 1 or dh.getDayOfWeek(d) eq 7}">weekend</c:if>">  
                                 <c:forEach items="${e.timesheets}" var="t">
                                     <c:if test="${d eq t.cidate}">
                                         <fmt:formatDate pattern = "HH:mm" 
@@ -147,6 +152,7 @@ Author     : Dat Lai
                 <span class="ml-4"><span class="dot present"></span>Present</span>
                 <span class="ml-4"><span class="dot absent"></span>Absent</span>
                 <span class="ml-4"><span class="dot late"></span>Late</span>
+                <span class="ml-4"><span class="dot weekend"></span>Weekend</span>
                 <span class="ml-4"><span class="dot request"></span>Hava a Request</span>
             </div>
         </div>
