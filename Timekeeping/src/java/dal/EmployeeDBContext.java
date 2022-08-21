@@ -41,6 +41,7 @@ public class EmployeeDBContext extends DBContext {
                     Position p = new Position();
                     p.setPid(rs.getInt("pid"));
                     p.setPname(rs.getString("pname"));
+                    p.setSalary(rs.getFloat("salary"));
                     currentEmp.setPos(p);
                     currentEmp.setTimesheets(new ArrayList<>());
                     currentEmp.setRequests(new ArrayList<>());

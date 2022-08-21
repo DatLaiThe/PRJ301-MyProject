@@ -39,7 +39,7 @@ Author     : Dat Lai
             .holiday{
                 background-color: #e76161;
             }
-            
+
             .weekend{
                 background-color: #20c997;
             }
@@ -55,7 +55,7 @@ Author     : Dat Lai
 
     <body>
         <h1 class="heading">Time Keeping</h1>
-        <div class="container mb-5">
+        <div class="container mb-4">
             <div class="function">
                 <div class="row">
                     <div class="col-6">
@@ -77,7 +77,18 @@ Author     : Dat Lai
                 </div>
             </div>
         </div>
+
         <jsp:useBean id="dh" class="helper.DateTimeHelper"></jsp:useBean>
+            <div class="d-flex justify-content-center mb-3">
+                <div >
+                    <span class="ml-4"><span class="dot present"></span>Present</span>
+                    <span class="ml-4"><span class="dot absent"></span>Absent</span>
+                    <span class="ml-4"><span class="dot late"></span>Late</span>
+                    <span class="ml-4"><span class="dot weekend"></span>Weekend</span>
+                    <span class="ml-4"><span class="dot request"></span>Hava a Request</span>
+                    <span class="ml-4"><span class="dot holiday"></span>Holiday</span>
+                </div>
+            </div>
             <div class="container-fluid text-center">
                 <table class="w-100 table table-bordered">
                     <!--Render type-->
@@ -87,12 +98,12 @@ Author     : Dat Lai
                         <th rowspan="3" class="align-middle">Position</th>
                         <th class="monthHeading" colspan="31">
                         <fmt:formatDate pattern = "MMMM YYYY" 
-                                        value = "${requestScope. dates.get(0)}" /> <br/>
+                                        value = "${sessionScope. dates.get(0)}" /> <br/>
                     </th>
                 </tr>
                 <!--render date-->
                 <tr class="thead-light">
-                    <c:forEach items="${requestScope.dates}" var="d">
+                    <c:forEach items="${sessionScope.dates}" var="d">
                         <th>
                             <fmt:formatDate pattern = "dd" 
                                             value = "${d}" /> <br/>
@@ -101,22 +112,22 @@ Author     : Dat Lai
                 </tr>
                 <!--render day-->
                 <tr>
-                    <c:forEach items="${requestScope.dates}" var="d">
+                    <c:forEach items="${sessionScope.dates}" var="d">
                         <td class="week <c:if test="${dh.getDayOfWeek(d) eq 1 or dh.getDayOfWeek(d) eq 7}">weekend</c:if>">
                             <fmt:formatDate pattern = "EEE" 
                                             value = "${d}" />
                         </td>
                     </c:forEach>
                 </tr>
-                <c:forEach items="${requestScope.emps}" var="e">
+                <c:forEach items="${sessionScope.emps}" var="e">
                     <tr>
                         <td class="align-middle">${e.eid}</td>
                         <td class="align-middle">${e.ename}</td>
                         <td class="align-middle">${e.pos.pname}</td>
-                        <c:forEach items="${requestScope.dates}" var="d"> 
+                        <c:forEach items="${sessionScope.dates}" var="d"> 
                             <c:choose>
                                 <c:when test = "${dh.isInTimeSheet(e.timesheets,d)}">
-                                    <td class="congItem present <c:if test="${dh.isHoliday(requestScope.holi,d)}">holiday</c:if> <c:if test="${dh.getDayOfWeek(d) eq 1 or dh.getDayOfWeek(d) eq 7}">weekend</c:if>">  
+                                    <td class="congItem present <c:if test="${dh.isHoliday(sessionScope.holi,d)}">holiday</c:if> <c:if test="${dh.getDayOfWeek(d) eq 1 or dh.getDayOfWeek(d) eq 7}">weekend</c:if>">  
                                         <c:forEach items="${e.timesheets}" var="t">
                                             <c:if test="${d eq t.cidate}">
                                                 <div class="<c:if test="${dh.isLate(t)}">late</c:if>">
@@ -132,7 +143,7 @@ Author     : Dat Lai
                                 </c:when>
 
                                 <c:otherwise>
-                                    <td class="congItem absent <c:if test="${dh.isHoliday(requestScope.holi,d)}">holiday</c:if> <c:if test="${dh.isInRequest(e.requests,d)}">request</c:if> <c:if test="${dh.getDayOfWeek(d) eq 1 or dh.getDayOfWeek(d) eq 7}">weekend</c:if>">  
+                                    <td class="congItem absent <c:if test="${dh.isHoliday(sessionScope.holi,d)}">holiday</c:if> <c:if test="${dh.isInRequest(e.requests,d)}">request</c:if> <c:if test="${dh.getDayOfWeek(d) eq 1 or dh.getDayOfWeek(d) eq 7}">weekend</c:if>">  
                                             <br>-<br>
                                         </td>
                                 </c:otherwise>
@@ -147,16 +158,7 @@ Author     : Dat Lai
 
 
 
-        <div class="d-flex justify-content-center">
-            <div >
-                <span class="ml-4"><span class="dot present"></span>Present</span>
-                <span class="ml-4"><span class="dot absent"></span>Absent</span>
-                <span class="ml-4"><span class="dot late"></span>Late</span>
-                <span class="ml-4"><span class="dot weekend"></span>Weekend</span>
-                <span class="ml-4"><span class="dot request"></span>Hava a Request</span>
-                <span class="ml-4"><span class="dot holiday"></span>Holiday</span>
-            </div>
-        </div>
+
     </body>
 
 </html>

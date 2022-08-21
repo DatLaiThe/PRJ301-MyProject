@@ -27,7 +27,6 @@ public class TimeSheet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Date today = new Date();
-        System.out.println(today);
         
         //Get Begin, end day of month
         today = DateTimeHelper.addMonths(DateTimeHelper.removeTime(today), 1);
@@ -41,9 +40,9 @@ public class TimeSheet extends HttpServlet {
         List<Date> dates = DateTimeHelper.getDates(begin, end);
         HolidayDBContext hdb = new HolidayDBContext();
         List<Holiday> holi = hdb.getAllHolidays(begin, end);
-        request.setAttribute("emps", emps);
-        request.setAttribute("dates", dates);
-        request.setAttribute("holi", holi);
+        request.getSession().setAttribute("emps", emps);
+        request.getSession().setAttribute("dates", dates);
+        request.getSession().setAttribute("holi", holi);
         request.getRequestDispatcher("view/timesheet.jsp").forward(request, response);
     }
 

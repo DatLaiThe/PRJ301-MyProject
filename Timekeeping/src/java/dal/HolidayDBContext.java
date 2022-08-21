@@ -23,10 +23,13 @@ public class HolidayDBContext extends DBContext {
         List<Holiday> list = new ArrayList<>();
         try {
             String sql = "select * from Holiday h inner join HolidayType ht on h.tid = ht.tid\n"
-                    + "where  ? <= [from] and ? >= [to]";
+                    + "where  ([from] >= ? and [from] <= ?) \n"
+                    + "or ([to] >= ? and [to] <= ?)";
             PreparedStatement st = connection.prepareStatement(sql);
             st.setTimestamp(1, DateTimeHelper.getTimeStamp(from));
             st.setTimestamp(2, DateTimeHelper.getTimeStamp(to));
+            st.setTimestamp(3, DateTimeHelper.getTimeStamp(from));
+            st.setTimestamp(4, DateTimeHelper.getTimeStamp(to));
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Holiday h = new Holiday();
@@ -40,7 +43,6 @@ public class HolidayDBContext extends DBContext {
                 h.setHtype(ht);
                 list.add(h);
             }
-            System.out.println(list.size());
         } catch (Exception e) {
             System.out.println(e);
         }

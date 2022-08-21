@@ -9,8 +9,18 @@ package model;
  * @author Dat Lai
  */
 public class Position {
+
     private int pid;
     private String pname;
+    private float salary;
+
+    public float getSalary() {
+        return salary;
+    }
+
+    public void setSalary(float salary) {
+        this.salary = salary;
+    }
 
     public int getPid() {
         return pid;
@@ -27,5 +37,5 @@ public class Position {
     public void setPname(String pname) {
         this.pname = pname;
     }
-    
+
 }
