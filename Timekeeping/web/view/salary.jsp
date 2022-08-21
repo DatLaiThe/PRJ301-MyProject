@@ -136,15 +136,22 @@
                     <td>1.115$</td>
                 </tr>
                 <jsp:useBean id="cal" class="helper.Calculate"></jsp:useBean>
+                <c:set var = "dayWorkInMonth" scope = "session" value = "${cal.dayWorkingInMonth(sessionScope.dates)}"/>
                 <c:forEach items="${sessionScope.emps}" var="e">
                     <tr>
                         <c:set var = "workDay" scope = "session" value = "${cal.getWorkDay(e.timesheets,sessionScope.holi)}"/>
+                        <c:set var = "absentDay" scope = "session" value = "${cal.getAbsentDay(e,sessionScope.holi,sessionScope.dates)}"/>
                         <td>${e.ename}</td>
                         <td>${e.pos.pname}</td>
                         <td>${workDay.get(0)}</td>
                         <td>${workDay.get(1)}</td>
                         <td>${workDay.get(2)}</td>
-
+                        <td>${absentDay.get(0)}</td>
+                        <td>${absentDay.get(1)}</td>
+                        <td>${absentDay.get(2)}</td>
+                        <td>${cal.TotalWorkDay(cal.getWorkDay(e.timesheets,sessionScope.holi))}</td>
+                        <td>${cal.TotalEffort(cal.getWorkDay(e.timesheets,sessionScope.holi),cal.getAbsentDay(e,sessionScope.holi,sessionScope.dates))}</td>
+                        <td>${cal.CalSalary(cal.getWorkDay(e.timesheets,sessionScope.holi), cal.getAbsentDay(e,sessionScope.holi,sessionScope.dates), e.pos.salary, dayWorkInMonth)}$</td>
                     </tr>
                 </c:forEach>
             </table>
