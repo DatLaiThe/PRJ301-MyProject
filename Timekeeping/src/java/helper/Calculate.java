@@ -4,7 +4,6 @@
  */
 package helper;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -49,7 +48,7 @@ public class Calculate {
         }
         for (Date date : d) {
             int day = DateTimeHelper.getDayOfWeek(date);
-            if (DateTimeHelper.isInTimeSheet(e.getTimesheets(), date)) {
+            if (DateTimeHelper.isInTimeSheet(e.getTimesheets(), date) != null) {
                 continue;
             }
             if (DateTimeHelper.isInRequest(e.getRequests(), date)) {
@@ -101,7 +100,6 @@ public class Calculate {
 
     public float CalSalary(List<Integer> w, List<Integer> a, float salary, int dayWorking) {
         float sal = (salary * TotalEffort(w, a)) / dayWorking;
-        
         return (float) Math.round(sal *100) /100;
     }
 }

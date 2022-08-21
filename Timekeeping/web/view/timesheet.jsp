@@ -21,7 +21,7 @@ Author     : Dat Lai
         <link rel="stylesheet" href="css/timesheet.css">
 
         <style>
-            .present {
+            .normal {
                 background-color: rgba(0, 128, 0, 0.5);
             }
 
@@ -49,6 +49,17 @@ Author     : Dat Lai
                 font-size: 30px;
                 color: #495057;
             }
+            .tdEffort{
+                display: none;
+                transition: all .5s
+            }
+            .congItem:hover .tdEffort {
+                display: block;
+            }
+            .congItem:hover .tdTime {
+                display: none;
+            }
+
 
         </style>
     </head>
@@ -125,26 +136,28 @@ Author     : Dat Lai
                         <td class="align-middle">${e.ename}</td>
                         <td class="align-middle">${e.pos.pname}</td>
                         <c:forEach items="${sessionScope.dates}" var="d"> 
+                            <c:set var = "t" scope = "session" value = "${dh.isInTimeSheet(e.timesheets,d)}"/>
+                            <c:set var = "dt" scope = "session" value = "${dh.getDayType(t,d,sessionScope.holi,e.requests)}"/>
                             <c:choose>
-                                <c:when test = "${dh.isInTimeSheet(e.timesheets,d)}">
-                                    <td class="congItem present <c:if test="${dh.isHoliday(sessionScope.holi,d)}">holiday</c:if> <c:if test="${dh.getDayOfWeek(d) eq 1 or dh.getDayOfWeek(d) eq 7}">weekend</c:if>">  
-                                        <c:forEach items="${e.timesheets}" var="t">
-                                            <c:if test="${d eq t.cidate}">
-                                                <div class="<c:if test="${dh.isLate(t)}">late</c:if>">
-                                                    <fmt:formatDate pattern = "HH:mm" 
-                                                                    value = "${t.checkin}" />
-                                                    <br>-<br>
-                                                    <fmt:formatDate pattern = "HH:mm" 
-                                                                    value = "${t.checkout}" />
-                                                </div> 
-                                            </c:if>  
-                                        </c:forEach> 
+                                <c:when test = "${t != null}">
+                                    <td class="congItem ${dt.typeClass} <c:if test="${dt.late}">late</c:if> }">  
+
+                                        <div class="tdTime">
+                                            <fmt:formatDate pattern = "HH:mm" 
+                                                            value = "${t.checkin}" />
+                                            <br>-<br>
+                                            <fmt:formatDate pattern = "HH:mm" 
+                                                            value = "${t.checkout}" />
+                                        </div> 
+                                        <div class="tdEffort"><br>${dt.effort}<br></div>
+
                                     </td>
                                 </c:when>
 
                                 <c:otherwise>
-                                    <td class="congItem absent <c:if test="${dh.isHoliday(sessionScope.holi,d)}">holiday</c:if> <c:if test="${dh.isInRequest(e.requests,d)}">request</c:if> <c:if test="${dh.getDayOfWeek(d) eq 1 or dh.getDayOfWeek(d) eq 7}">weekend</c:if>">  
-                                            <br>-<br>
+                                    <td class="congItem ${dt.typeClass}">  
+                                        <div class="tdTime"><br>-<br></div>
+                                        <div class="tdEffort"><br>${dt.effort}<br></div>
                                         </td>
                                 </c:otherwise>
                             </c:choose>

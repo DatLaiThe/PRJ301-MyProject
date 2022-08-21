@@ -106,6 +106,7 @@
         <div class="container-fluid">
             <table class="w-100 table table-bordered text-center ">
                 <tr class="table-active">
+                    <th rowspan="2" class="align-middle">ID</th>
                     <th rowspan="2" class="align-middle">Name</th>
                     <th rowspan="2" class="align-middle">Position</th>
                     <th colspan="3">Effort</th>
@@ -122,25 +123,13 @@
                     <th>With Request</th>
                     <th>Holiday</th>
                 </tr>
-                <tr>
-                    <td>Lai The Dat</td>
-                    <td>Manager</td>
-                    <td>20</td>
-                    <td>2</td>
-                    <td>1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>0</td>
-                    <td>23</td>
-                    <td>29</td>
-                    <td>1.115$</td>
-                </tr>
                 <jsp:useBean id="cal" class="helper.Calculate"></jsp:useBean>
                 <c:set var = "dayWorkInMonth" scope = "session" value = "${cal.dayWorkingInMonth(sessionScope.dates)}"/>
                 <c:forEach items="${sessionScope.emps}" var="e">
                     <tr>
                         <c:set var = "workDay" scope = "session" value = "${cal.getWorkDay(e.timesheets,sessionScope.holi)}"/>
                         <c:set var = "absentDay" scope = "session" value = "${cal.getAbsentDay(e,sessionScope.holi,sessionScope.dates)}"/>
+                        <td>${e.eid}</td>
                         <td>${e.ename}</td>
                         <td>${e.pos.pname}</td>
                         <td>${workDay.get(0)}</td>
