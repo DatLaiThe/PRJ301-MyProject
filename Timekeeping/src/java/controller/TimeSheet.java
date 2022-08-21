@@ -5,6 +5,7 @@
 package controller;
 
 import dal.EmployeeDBContext;
+import dal.HolidayDBContext;
 import helper.DateTimeHelper;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -14,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
 import model.Employee;
+import model.Holiday;
 
 /**
  *
@@ -25,7 +27,10 @@ public class TimeSheet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Date today = new Date();
+        System.out.println(today);
+        
         //Get Begin, end day of month
+        today = DateTimeHelper.addMonths(DateTimeHelper.removeTime(today), 1);
         today = DateTimeHelper.removeTime(today);
         int dayOfMonth = DateTimeHelper.getDayOfMonth(today);
         Date begin = DateTimeHelper.addDays(today, (dayOfMonth - 1) * -1);
@@ -34,8 +39,11 @@ public class TimeSheet extends HttpServlet {
         EmployeeDBContext db = new EmployeeDBContext();
         List<Employee> emps = db.getAllEmployee(begin, end);
         List<Date> dates = DateTimeHelper.getDates(begin, end);
+        HolidayDBContext hdb = new HolidayDBContext();
+        List<Holiday> holi = hdb.getAllHolidays(begin, end);
         request.setAttribute("emps", emps);
         request.setAttribute("dates", dates);
+        request.setAttribute("holi", holi);
         request.getRequestDispatcher("view/timesheet.jsp").forward(request, response);
     }
 

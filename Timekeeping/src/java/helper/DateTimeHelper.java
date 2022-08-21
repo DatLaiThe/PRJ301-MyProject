@@ -4,11 +4,13 @@
  */
 package helper;
 
+import dal.HolidayDBContext;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import model.Holiday;
 import model.Request;
 import model.TimeSheet;
 
@@ -114,6 +116,15 @@ public class DateTimeHelper {
     public static boolean isInRequest(List<Request> r, Date d) {
         for (Request ts : r) {
             if (ts.getFrom().compareTo(d) <= 0 && ts.getTo().compareTo(d) >= 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isHoliday(List<Holiday> t, Date d) {
+        for (Holiday h : t) {
+            if (h.getFrom().compareTo(d) <= 0 && h.getTo().compareTo(d) >= 0) {
                 return true;
             }
         }

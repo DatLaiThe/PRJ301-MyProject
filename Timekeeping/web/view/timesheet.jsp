@@ -26,7 +26,7 @@ Author     : Dat Lai
             }
 
             .absent {
-                background-color: rgb(200, 99, 99, .5);
+                background-color: silver;
             }
 
             .request {
@@ -36,14 +36,15 @@ Author     : Dat Lai
             .late {
                 background-color: rgba(255, 166, 0, 0.5);
             }
-
+            .holiday{
+                background-color: #e76161;
+            }
+            
             .weekend{
                 background-color: #20c997;
             }
 
-            .holiday{
-                background-color: rgba(0, 128, 0, 0.5);
-            }
+
             .monthHeading{
                 font-size: 30px;
                 color: #495057;
@@ -81,6 +82,7 @@ Author     : Dat Lai
                 <table class="w-100 table table-bordered">
                     <!--Render type-->
                     <tr>
+                        <th rowspan="3" class="align-middle">ID</th>
                         <th rowspan="3" class="align-middle">Name</th>
                         <th rowspan="3" class="align-middle">Position</th>
                         <th class="monthHeading" colspan="31">
@@ -108,45 +110,34 @@ Author     : Dat Lai
                 </tr>
                 <c:forEach items="${requestScope.emps}" var="e">
                     <tr>
+                        <td class="align-middle">${e.eid}</td>
                         <td class="align-middle">${e.ename}</td>
                         <td class="align-middle">${e.pos.pname}</td>
                         <c:forEach items="${requestScope.dates}" var="d"> 
-                            <!--Render in TimeSheet-->
-                            <!--Render out TimeSheet-->
-
-
                             <c:choose>
-
                                 <c:when test = "${dh.isInTimeSheet(e.timesheets,d)}">
-                                    <td class="congItem present <c:if test="${dh.getDayOfWeek(d) eq 1 or dh.getDayOfWeek(d) eq 7}">weekend</c:if>">  
+                                    <td class="congItem present <c:if test="${dh.isHoliday(requestScope.holi,d)}">holiday</c:if> <c:if test="${dh.getDayOfWeek(d) eq 1 or dh.getDayOfWeek(d) eq 7}">weekend</c:if>">  
                                         <c:forEach items="${e.timesheets}" var="t">
-
                                             <c:if test="${d eq t.cidate}">
                                                 <div class="<c:if test="${dh.isLate(t)}">late</c:if>">
                                                     <fmt:formatDate pattern = "HH:mm" 
-                                                                value = "${t.checkin}" />
+                                                                    value = "${t.checkin}" />
                                                     <br>-<br>
                                                     <fmt:formatDate pattern = "HH:mm" 
                                                                     value = "${t.checkout}" />
                                                 </div> 
                                             </c:if>  
-
-
                                         </c:forEach> 
                                     </td>
                                 </c:when>
 
                                 <c:otherwise>
-                                    <td class="congItem absent <c:if test="${dh.isInRequest(e.requests,d)}">request</c:if> <c:if test="${dh.getDayOfWeek(d) eq 1 or dh.getDayOfWeek(d) eq 7}">weekend</c:if>">  
+                                    <td class="congItem absent <c:if test="${dh.isHoliday(requestScope.holi,d)}">holiday</c:if> <c:if test="${dh.isInRequest(e.requests,d)}">request</c:if> <c:if test="${dh.getDayOfWeek(d) eq 1 or dh.getDayOfWeek(d) eq 7}">weekend</c:if>">  
                                             <br>-<br>
                                         </td>
                                 </c:otherwise>
                             </c:choose>
-
-
                         </c:forEach>
-
-
                     </tr>
                 </c:forEach>
 
@@ -163,6 +154,7 @@ Author     : Dat Lai
                 <span class="ml-4"><span class="dot late"></span>Late</span>
                 <span class="ml-4"><span class="dot weekend"></span>Weekend</span>
                 <span class="ml-4"><span class="dot request"></span>Hava a Request</span>
+                <span class="ml-4"><span class="dot holiday"></span>Holiday</span>
             </div>
         </div>
     </body>
