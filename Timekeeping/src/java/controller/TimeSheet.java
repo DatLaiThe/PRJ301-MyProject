@@ -31,13 +31,19 @@ public class TimeSheet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Date today = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String date = request.getParameter("date");
         String name = request.getParameter("name");
         if (date != null && date != "") {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             try {
                 today = sdf.parse(date);
-                request.setAttribute("date", date);
+                request.getSession().setAttribute("date", date);
+            } catch (ParseException ex) {
+                Logger.getLogger(TimeSheet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else if (request.getSession().getAttribute("date") != null) {
+            try {
+                today = sdf.parse((String) request.getSession().getAttribute("date"));
             } catch (ParseException ex) {
                 Logger.getLogger(TimeSheet.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -51,7 +57,7 @@ public class TimeSheet extends HttpServlet {
         Date end = DateTimeHelper.addDays(DateTimeHelper.addMonths(begin, 1), -1);
 
         EmployeeDBContext db = new EmployeeDBContext();
-        List<Employee> emps = db.getAllEmployee(begin, end,name);
+        List<Employee> emps = db.getAllEmployee(begin, end, name);
         List<Date> dates = DateTimeHelper.getDates(begin, end);
         HolidayDBContext hdb = new HolidayDBContext();
         List<Holiday> holi = hdb.getAllHolidays(begin, end);

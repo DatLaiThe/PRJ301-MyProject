@@ -94,8 +94,11 @@
                 </tr>
                 <jsp:useBean id="cal" class="helper.Calculate"></jsp:useBean>
                 <c:set var = "dayWorkInMonth" scope = "session" value = "${cal.dayWorkingInMonth(sessionScope.dates)}"/>
+                <jsp:useBean id="listSM" class="model.ListSumMonth"></jsp:useBean>
                 <c:forEach items="${sessionScope.emps}" var="e">
                     <c:set var = "sumMonth" scope = "session" value = "${cal.calAll(sessionScope.dates, e.timesheets, sessionScope.holi, e.requests)}"/>    
+                    <c:set var="salary" scope="session" value="${cal.CalSalary(sumMonth.effort, e.pos.salary, dayWorkInMonth)}"></c:set>
+                    ${listSM.addSM(sumMonth)}
                     <tr>
                         <td>${e.eid}</td>
                         <td>${e.ename}</td>
@@ -110,9 +113,24 @@
                         <td>${sumMonth.calWorkDay()}</td>   
                         <td>${sumMonth.late}</td>
                         <td>${sumMonth.effort}</td>
-                        <td>${cal.CalSalary(sumMonth.effort, e.pos.salary, dayWorkInMonth)}$</td>
+                        <td>${salary}$</td>
+                        ${listSM.addSalary(salary)}
                     </tr>
                 </c:forEach>
+                ${listSM.countTotal()}
+                <tr class="table-primary">
+                    <th colspan="4">Total</th>
+                    <th>${listSM.normal}</th>
+                    <th>${listSM.weekend}</th>
+                    <th>${listSM.workHoliday}</th>
+                    <th>${listSM.absent}</th>
+                    <th>${listSM.request}</th>
+                    <th>${listSM.holiday}</th>
+                    <th>${listSM.workDay}</th>
+                    <th>${listSM.late}</th>
+                    <th>${listSM.effort}</th>
+                    <th>${listSM.salary}</th>
+                </tr>
             </table>
         </div>
 
