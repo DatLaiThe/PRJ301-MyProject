@@ -19,13 +19,17 @@ import model.*;
  */
 public class EmployeeDBContext extends DBContext {
 
-    public List<Employee> getAllEmployee(Date from, Date to) {
+    public List<Employee> getAllEmployee(Date from, Date to, String name) {
         List<Employee> emps = new ArrayList<>();
         try {
             String sql = "select e.eid,e.ename,p.pid,p.pname,p.salary,ISNULL(t.tid,-1) tid,t.checkin,t.checkout \n"
                     + "from Employee e inner join Position p on e.pid = p.pid\n"
                     + "left join(select * from TimeSheet t\n"
-                    + "	where t.checkin >= ? and t.checkin < ? ) t on e.eid = t.eid";
+                    + "	where t.checkin >= ? and t.checkin < ? ) t on e.eid = t.eid\n"
+                    + "where 1 = 1";
+            if (name != null && name != "") {
+                sql += "and e.ename like '%" + name + "%'";
+            }
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setTimestamp(1, DateTimeHelper.getTimeStamp(from));
             stm.setTimestamp(2, DateTimeHelper.getTimeStamp(DateTimeHelper.addDays(to, 1)));
@@ -78,12 +82,12 @@ public class EmployeeDBContext extends DBContext {
                     r.setType(t);
                     e.getRequests().add(r);
                 }
-               
+
             }
         } catch (Exception e) {
             System.out.println(e);
         }
         return emps;
     }
-    
+
 }

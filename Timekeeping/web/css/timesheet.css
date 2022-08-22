@@ -42,9 +42,6 @@
     background-color: rgba(60, 60, 165, 0.5);
 }
 
-.late {
-    background-color: rgba(255, 166, 0, 0.5);
-}
 .holiday{
     background-color: #e76161;
 }
@@ -53,6 +50,9 @@
     background-color: #20c997;
 }
 
+.late {
+    background-color: rgba(255, 166, 0, 0.5);
+}
 
 .monthHeading{
     font-size: 30px;

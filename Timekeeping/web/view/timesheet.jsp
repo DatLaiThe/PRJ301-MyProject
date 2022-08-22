@@ -20,6 +20,30 @@ Author     : Dat Lai
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <!--Main CSS-->
         <link rel="stylesheet" href="css/timesheet.css">
+        <style>
+            .normal {
+                background-color: rgba(0, 128, 0, 0.5);
+            }
+            .late {
+                background-color: rgba(255, 166, 0, 0.5);
+            }
+            .tdEffort{
+                display: none;
+                transition: all .5s
+            }
+            .congItem:hover .tdEffort {
+                display: block;
+            }
+            .congItem:hover .tdTime {
+                display: none;
+            }
+        </style>
+        <script>
+            function changeCal(){
+                var date = document.getElementById("date").value;
+                window.location.href = "time?date=" + date;
+            }
+        </script>
     </head>
 
     <body>
@@ -29,9 +53,9 @@ Author     : Dat Lai
                 <div class="row">
                     <div class="col-6">
                         <div class="left">
-                            <input type="date" class="dateInput">
-                            <form action="search">
-                                <input type="text" placeholder="Search by name" class="form-control d-inline w-50">
+                            <input value="${(requestScope.date != null)?requestScope.date:""}" id="date" type="date" class="dateInput" onchange="changeCal()">
+                            <form action="time">
+                                <input name="name" type="text" placeholder="Search by name" class="form-control d-inline w-50">
                                 <input type="submit" value="Search" class="btn btn-outline-secondary">
                             </form>
                         </div>

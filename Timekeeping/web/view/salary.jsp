@@ -4,6 +4,7 @@
     Author     : Dat Lai
 --%>
 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -51,20 +52,13 @@
         <!-- BS4 -->
         <link rel="stylesheet" href="css/bootstrap.min.css">
     </head>
-
     <body>
-        <h1 class="text-center text-primary heading">Salary Calculator</h1>
+        <h1 class="text-center text-primary heading"><fmt:formatDate pattern = "MMMM YYYY" 
+                        value = "${sessionScope. dates.get(0)}" /> Salary</h1>
         <div class="container mb-5">
             <div class="function">
                 <div class="row">
                     <div class="col-6">
-                        <div class="left">
-                            <input type="date" class="dateInput">
-                            <form action="search">
-                                <input type="text" placeholder="Search by name" class="form-control d-inline w-50">
-                                <input type="submit" value="Search" class="btn btn-outline-secondary">
-                            </form>
-                        </div>
                     </div>
                     <div class="col-6 position-relative">
                         <div class="right">
