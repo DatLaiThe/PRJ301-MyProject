@@ -29,7 +29,7 @@ public class TimeSheet extends HttpServlet {
         Date today = new Date();
         
         //Get Begin, end day of month
-        today = DateTimeHelper.addMonths(DateTimeHelper.removeTime(today), 1);
+        today = DateTimeHelper.addMonths(DateTimeHelper.removeTime(today), 0);
         today = DateTimeHelper.removeTime(today);
         int dayOfMonth = DateTimeHelper.getDayOfMonth(today);
         Date begin = DateTimeHelper.addDays(today, (dayOfMonth - 1) * -1);

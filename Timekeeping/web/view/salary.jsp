@@ -31,33 +31,6 @@
                 right: 0;
             }
 
-            .congItem {
-                font-size: 11px;
-                padding: 0.75rem 0px !important;
-            }
-
-            .week {
-                transform: rotate(-90deg);
-                padding: 10px 0px !important;
-
-            }
-
-            .absent {
-                background-color: rgb(200, 99, 99, .5);
-            }
-
-            .request {
-                background-color: rgba(60, 60, 165, 0.5);
-            }
-
-            .late {
-                background-color: rgba(255, 166, 0, 0.5);
-            }
-
-            .present {
-                background-color: rgba(0, 128, 0, 0.5);
-            }
-
             .table-dark th {
                 border: 1px solid #dee2e6 !important;
             }

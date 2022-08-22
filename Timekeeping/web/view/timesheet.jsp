@@ -18,50 +18,8 @@ Author     : Dat Lai
 
         <!-- BS4 -->
         <link rel="stylesheet" href="css/bootstrap.min.css">
+        <!--Main CSS-->
         <link rel="stylesheet" href="css/timesheet.css">
-
-        <style>
-            .normal {
-                background-color: rgba(0, 128, 0, 0.5);
-            }
-
-            .absent {
-                background-color: silver;
-            }
-
-            .request {
-                background-color: rgba(60, 60, 165, 0.5);
-            }
-
-            .late {
-                background-color: rgba(255, 166, 0, 0.5);
-            }
-            .holiday{
-                background-color: #e76161;
-            }
-
-            .weekend{
-                background-color: #20c997;
-            }
-
-
-            .monthHeading{
-                font-size: 30px;
-                color: #495057;
-            }
-            .tdEffort{
-                display: none;
-                transition: all .5s
-            }
-            .congItem:hover .tdEffort {
-                display: block;
-            }
-            .congItem:hover .tdTime {
-                display: none;
-            }
-
-
-        </style>
     </head>
 
     <body>
