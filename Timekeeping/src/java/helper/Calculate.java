@@ -4,11 +4,16 @@
  */
 package helper;
 
+import static helper.DateTimeHelper.getDayType;
+import static helper.DateTimeHelper.isInTimeSheet;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import model.DayType;
 import model.Employee;
 import model.Holiday;
+import model.Request;
+import model.SumMonth;
 import model.TimeSheet;
 
 /**
@@ -16,76 +21,6 @@ import model.TimeSheet;
  * @author Dat Lai
  */
 public class Calculate {
-
-    public List<Integer> getWorkDay(List<TimeSheet> t, List<Holiday> h) {
-        int normal = 0;
-        int weekend = 0;
-        int holi = 0;
-        for (TimeSheet time : t) {
-            Date d = DateTimeHelper.removeTime(time.getCheckin());
-            int day = DateTimeHelper.getDayOfWeek(time.getCheckin());
-            if (day == 1 || day == 7) {
-                weekend++;
-            } else if (DateTimeHelper.isHoliday(h, d)) {
-                holi++;
-            } else {
-                normal++;
-            }
-        }
-        List<Integer> work = new ArrayList<>();
-        work.add(normal);
-        work.add(weekend);
-        work.add(holi);
-        return work;
-    }
-
-    public List<Integer> getAbsentDay(Employee e, List<Holiday> h, List<Date> d) {
-        List<Integer> absentDay = new ArrayList<>();
-        int request = 0;
-        int absent = 0;
-        int holiday = 0;
-        for (Date date : d) {
-        }
-        for (Date date : d) {
-            int day = DateTimeHelper.getDayOfWeek(date);
-            if (DateTimeHelper.isInTimeSheet(e.getTimesheets(), date) != null) {
-                continue;
-            }
-            if (DateTimeHelper.isInRequest(e.getRequests(), date)) {
-                request++;
-            } else if (day != 1 && day != 7) {
-                if (DateTimeHelper.isHoliday(h, date)) {
-                    holiday++;
-                } else {
-                    absent++;
-                }
-            }
-        }
-
-        absentDay.add(absent);
-        absentDay.add(request);
-        absentDay.add(holiday);
-
-        return absentDay;
-    }
-
-    public int TotalWorkDay(List<Integer> t) {
-        int sum = 0;
-        if (t == null) {
-            return 0;
-        }
-        for (Integer i : t) {
-            sum += i;
-        }
-        return sum;
-    }
-
-    public float TotalEffort(List<Integer> w, List<Integer> a) {
-        if (w == null || a == null) {
-            return 0;
-        }
-        return (float) (w.get(0) + w.get(1) * 1.0f * 1.5 + w.get(2) * 1.0f * 3 + a.get(1) + a.get(2));
-    }
 
     public int dayWorkingInMonth(List<Date> d) {
         int count = 0;
@@ -98,8 +33,65 @@ public class Calculate {
         return count;
     }
 
-    public float CalSalary(List<Integer> w, List<Integer> a, float salary, int dayWorking) {
-        float sal = (salary * TotalEffort(w, a)) / dayWorking;
-        return (float) Math.round(sal *100) /100;
+    public float CalSalary(float effort, float salary, int dayWorking) {
+        float sal = (salary * effort) / dayWorking;
+        return (float) Math.round(sal * 100) / 100;
+    }
+
+    public SumMonth calAll(List<Date> date, List<TimeSheet> time, List<Holiday> hl, List<Request> r) {
+        List<DayType> dt = new ArrayList<>();
+        for (Date d : date) {
+            TimeSheet t = isInTimeSheet(time, d);
+            dt.add(getDayType(t, d, hl, r));
+        }
+        int late = 0, normal = 0, weekend = 0, workHoliday = 0, holiday = 0, request = 0, absent = 0;
+        float effort = 0;
+        for (DayType d : dt) {
+            switch (d.getTypeClass()) {
+                case "normal":
+                    normal++;
+                    if (!d.isLate()) {
+                        effort += d.getEffort();
+                    } else {
+                        late++;
+                    }
+                    break;
+                case "weekend":
+                    if (d.getEffort() != 0) {
+                        weekend++;
+                        if (!d.isLate()) {
+                            effort += d.getEffort();
+                        } else {
+                            late++;
+                        }
+                    }
+                    break;
+                case "holiday":
+                    if (d.getEffort() == 1) {
+                        holiday++;
+                        effort += d.getEffort();
+                    } else {
+                        workHoliday++;
+                        if (!d.isLate()) {
+                            effort += d.getEffort();
+                        } else {
+                            late++;
+                        }
+                    }
+                    break;
+                case "request":
+                    request++;
+                    effort += d.getEffort();
+                    break;
+                case "absent":
+                    absent++;
+                    break;
+                default:
+                    throw new AssertionError();
+            }
+        }
+
+        SumMonth s = new SumMonth(late, normal, weekend, workHoliday, holiday, request, absent, effort);
+        return s;
     }
 }

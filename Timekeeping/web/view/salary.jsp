@@ -76,9 +76,11 @@
                     <th rowspan="2" class="align-middle">ID</th>
                     <th rowspan="2" class="align-middle">Name</th>
                     <th rowspan="2" class="align-middle">Position</th>
-                    <th colspan="3">Effort</th>
+                    <th rowspan="2" class="align-middle">Base Salary</th>
+                    <th colspan="3">Work days</th>
                     <th colspan="3">Day-off</th>
-                    <th rowspan="2" class="align-middle">Work days</th>
+                    <th rowspan="2" class="align-middle">Total Work days</th>
+                    <th rowspan="2" class="align-middle">Late</th>
                     <th rowspan="2" class="align-middle">Total Effort</th>
                     <th rowspan="2" class="align-middle">Salary</th>
                 </tr>
@@ -93,21 +95,22 @@
                 <jsp:useBean id="cal" class="helper.Calculate"></jsp:useBean>
                 <c:set var = "dayWorkInMonth" scope = "session" value = "${cal.dayWorkingInMonth(sessionScope.dates)}"/>
                 <c:forEach items="${sessionScope.emps}" var="e">
+                    <c:set var = "sumMonth" scope = "session" value = "${cal.calAll(sessionScope.dates, e.timesheets, sessionScope.holi, e.requests)}"/>    
                     <tr>
-                        <c:set var = "workDay" scope = "session" value = "${cal.getWorkDay(e.timesheets,sessionScope.holi)}"/>
-                        <c:set var = "absentDay" scope = "session" value = "${cal.getAbsentDay(e,sessionScope.holi,sessionScope.dates)}"/>
                         <td>${e.eid}</td>
                         <td>${e.ename}</td>
                         <td>${e.pos.pname}</td>
-                        <td>${workDay.get(0)}</td>
-                        <td>${workDay.get(1)}</td>
-                        <td>${workDay.get(2)}</td>
-                        <td>${absentDay.get(0)}</td>
-                        <td>${absentDay.get(1)}</td>
-                        <td>${absentDay.get(2)}</td>
-                        <td>${cal.TotalWorkDay(cal.getWorkDay(e.timesheets,sessionScope.holi))}</td>
-                        <td>${cal.TotalEffort(cal.getWorkDay(e.timesheets,sessionScope.holi),cal.getAbsentDay(e,sessionScope.holi,sessionScope.dates))}</td>
-                        <td>${cal.CalSalary(cal.getWorkDay(e.timesheets,sessionScope.holi), cal.getAbsentDay(e,sessionScope.holi,sessionScope.dates), e.pos.salary, dayWorkInMonth)}$</td>
+                        <td>${e.pos.salary}$</td>
+                        <td>${sumMonth.normal}</td>                        
+                        <td>${sumMonth.weekend}</td>
+                        <td>${sumMonth.workHoliday}</td>
+                        <td>${sumMonth.absent}</td>
+                        <td>${sumMonth.request}</td>
+                        <td>${sumMonth.holiday}</td>
+                        <td>${sumMonth.calWorkDay()}</td>   
+                        <td>${sumMonth.late}</td>
+                        <td>${sumMonth.effort}</td>
+                        <td>${cal.CalSalary(sumMonth.effort, e.pos.salary, dayWorkInMonth)}$</td>
                     </tr>
                 </c:forEach>
             </table>

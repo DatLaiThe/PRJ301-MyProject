@@ -4,7 +4,6 @@
  */
 package helper;
 
-import dal.HolidayDBContext;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -90,7 +89,7 @@ public class DateTimeHelper {
         }
         return dates;
     }
-    
+
     public static boolean isLate(TimeSheet t) {
         Date inOnTime = new Date(t.getCheckin().getTime());
         inOnTime.setHours(8);
@@ -104,7 +103,7 @@ public class DateTimeHelper {
         }
         return false;
     }
-    
+
     public static TimeSheet isInTimeSheet(List<TimeSheet> t, Date d) {
         for (TimeSheet ts : t) {
             if (ts.getCidate().equals(d)) {
@@ -113,7 +112,7 @@ public class DateTimeHelper {
         }
         return null;
     }
-    
+
     public static boolean isInRequest(List<Request> r, Date d) {
         for (Request ts : r) {
             if (ts.getFrom().compareTo(d) <= 0 && ts.getTo().compareTo(d) >= 0) {
@@ -122,7 +121,7 @@ public class DateTimeHelper {
         }
         return false;
     }
-    
+
     public static boolean isHoliday(List<Holiday> t, Date d) {
         for (Holiday h : t) {
             if (h.getFrom().compareTo(d) <= 0 && h.getTo().compareTo(d) >= 0) {
@@ -131,12 +130,12 @@ public class DateTimeHelper {
         }
         return false;
     }
-    
+
     public static boolean isWeekend(Date d) {
         int day = getDayOfWeek(d);
         return (day == 1 || day == 7) ? true : false;
     }
-    
+
     public static DayType getDayType(TimeSheet t, Date d, List<Holiday> hl, List<Request> r) {
         DayType dt = new DayType();
         if (t != null) {
@@ -169,7 +168,18 @@ public class DateTimeHelper {
                 dt.setEffort(0);
             }
         }
-        
+
         return dt;
     }
+
+    public static List<DayType> getAllDayType(List<Date> date, List<TimeSheet> time, List<Holiday> hl, List<Request> r) {
+        List<DayType> l = new ArrayList<>();
+        for (Date d : date) {
+            TimeSheet t = isInTimeSheet(time, d);
+            l.add(getDayType(t, d, hl, r));
+        }
+        return l;
+    }
+    
+    
 }
