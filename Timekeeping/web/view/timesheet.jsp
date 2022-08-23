@@ -56,7 +56,7 @@ Author     : Dat Lai
         <jsp:useBean id="dh" class="helper.DateTimeHelper"></jsp:useBean>
             <div class="d-flex justify-content-center mb-3">
                 <div >
-                    <span class="ml-4"><span class="dot present"></span>Present</span>
+                    <span class="ml-4"><span class="dot normal"></span>Present</span>
                     <span class="ml-4"><span class="dot absent"></span>Absent</span>
                     <span class="ml-4"><span class="dot late"></span>Late</span>
                     <span class="ml-4"><span class="dot weekend"></span>Weekend</span>

@@ -129,7 +129,7 @@
                     <th>${listSM.workDay}</th>
                     <th>${listSM.late}</th>
                     <th>${listSM.effort}</th>
-                    <th>${listSM.salary}</th>
+                    <th>${listSM.salary}$</th>
                 </tr>
             </table>
         </div>
